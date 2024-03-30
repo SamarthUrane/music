@@ -1,0 +1,8 @@
+Application name	musicStreaming
+API key	2de0c1b9e85e060b9d0f724e8fa62ba5
+Shared secret	9e5b3285e6aea50b3f0c08e9e9ce1c7e
+Registered to	Samarth3201
+
+
+spotify
+18sWSMosVYSOlNsd8GcXN3ozI13oJfbH

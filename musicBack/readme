@@ -1,0 +1,8 @@
+For authentication:
+    passport:Passport simplifies user authentication in Node.js apps
+
+    passport-local: extension focusing on username/password authentication
+
+    passport-local-mongoose: for encryption (Serialize) decryption(deserialize)
+
+    express-session: To store data on server
