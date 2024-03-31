@@ -1,11 +1,11 @@
 // App.jsx
 import React from 'react'; 
-import Profile from './components/profile';
 import { Routes, Route, Navigate } from 'react-router-dom'; 
 import Register from './components/Register';
 import Home from './components/Home';
 import Login from './components/Login'; 
 import YourSong from './components/YourSongs';
+import Profile from './components/profile';
 import Search from './components/Search';
 import SongForm from './components/songForm';
 import GenreSongs from './components/GenreSongs';
