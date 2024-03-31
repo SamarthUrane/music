@@ -5,7 +5,6 @@ import Register from './components/Register';
 import Home from './components/Home';
 import Login from './components/Login'; 
 import YourSong from './components/YourSongs';
-import Profile from './components/profile';
 import Search from './components/Search';
 import SongForm from './components/songForm';
 import GenreSongs from './components/GenreSongs';
@@ -14,6 +13,7 @@ import { useEffect, useState } from "react";
 import { MyContext } from './components/myContext';
 import ArtistSongs from './components/ArtistSongs';
 import AllSong from './components/AllSongs';
+import Profile from './components/profile';
 
 const App = () => {  
   const [playingSong,setplayingSong]=useState("null");
