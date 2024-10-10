@@ -2,6 +2,8 @@
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import Sidebar from './Sidebar';
+import { getPresignedUrl } from './s3Op';
+import { uploadFileToS3 } from './s3Op';
 
 const SongForm = () => {
 
@@ -19,7 +21,7 @@ const SongForm = () => {
         title: '',
         lyrics: '',
         genre: '',
-        artist:JSON.parse(localStorage.getItem("user")).user.username,
+        artist: JSON.parse(localStorage.getItem("user")).user.username,
         file: '',
         thumbnail: '',
     });
@@ -35,37 +37,51 @@ const SongForm = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(formData)
-        
+    
+        const file = formData.file;
+        const fileType = file.type; // e.g., audio/mpeg
+    
+        // Get the pre-signed URL for the file
+        const presignedUrl = await getPresignedUrl(file, fileType);
+    
+        // Upload file to S3
+        await uploadFileToS3(file, presignedUrl);
+
+        const presignedUrlThumbnail = await getPresignedUrl(formData.thumbnail, formData.thumbnail.type);
+    
+        // Upload file to S3
+        await uploadFileToS3(formData.thumbnail, presignedUrlThumbnail);
+    
+        // Save the song details in your database
         const response = await fetch("http://localhost:3000/uploadSong", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({ formData: formData, uploadedBy:JSON.parse(localStorage.getItem("user")).user.username})
-        })
-
-        const data = await response.json();
-        if (response.ok) {
-            console.log("SUCCESS")
-        }
-        else {
-            console.log("FAILED")
-        }
-        
-        setFormData({
-            title: '',
-            lyrics: '',
-            genre: '',
-            artist:JSON.parse(localStorage.getItem("user")).user.username,
-            file: '',
-            thumbnail: ''
+            body: JSON.stringify({ 
+                formData: { 
+                    ...formData,
+                    file: file.name, // Store only file name or the full S3 URL if needed
+                    thumbnail: formData.thumbnail.name
+                },
+                uploadedBy: JSON.parse(localStorage.getItem("user")).user.username
+            })
         });
+    
+        if (response.ok) {
+            console.log("Song details saved successfully");
+        } else {
+            console.log("Failed to save song details");
+        }
     };
+
+
+    
+    
     const handleFileChange = (e) => {
         const { id, files } = e.target;
         const file = files[0];
-
+    
         setFormData({
             ...formData,
             [id]: file
@@ -101,16 +117,30 @@ const SongForm = () => {
                         <label htmlFor="artist" className="block text-gray-300">Artist</label>
                         <input id="artist" type="text" name="artist" value={formData.artist} onChange={handleChange} className="w-full mt-1 px-4 py-2 rounded bg-gray-800 text-gray-300 focus:outline-none focus:border-blue-500" required />
                     </div>
-
+ 
                     <div className="mb-4">
                         <label htmlFor="file" className="block text-gray-300">File</label>
-                        <input type="text" id="file" name="file" value={formData.file} onChange={handleChange} className="w-full mt-1 px-4 py-2 rounded bg-gray-800 text-gray-300 focus:outline-none focus:border-blue-500" required />
+                        <input
+                            type="file"
+                            id="file"
+                            name="file"
+                            onChange={handleFileChange}  // Call handleFileChange when the user selects a file
+                            className="w-full mt-1 px-4 py-2 rounded bg-gray-800 text-gray-300 focus:outline-none focus:border-blue-500"
+                            required
+                        />
                     </div>
 
                     <div className="mb-4">
-                        <label htmlFor="thumbnail" className="block text-gray-300">Thumbnail</label>
-                        <input type="text" id="thumbnail" name="thumbnail" value={formData.thumbnail} onChange={handleChange} className="w-full mt-1 px-4 py-2 rounded bg-gray-800 text-gray-300 focus:outline-none focus:border-blue-500" required />
-                    </div>
+                        <label htmlFor="file" className="block text-gray-300">Thumbnail</label>
+                        <input
+                            type="file"
+                            id="thumbnail"
+                            name="thumbnail"
+                            onChange={handleFileChange}  // Call handleFileChange when the user selects a file
+                            className="w-full mt-1 px-4 py-2 rounded bg-gray-800 text-gray-300 focus:outline-none focus:border-blue-500"
+                            required
+                        />
+                    </div> 
                     <div className="mb-6">
                         <button type="submit" className="w-full px-4 py-2 rounded bg-blue-500 text-white font-semibold hover:bg-blue-600 focus:outline-none focus:bg-blue-600">Submit</button>
                     </div>

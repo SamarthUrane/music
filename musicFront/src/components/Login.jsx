@@ -37,7 +37,7 @@ const Login = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-900">
-      <div  className="bg-gray-800 p-5 rounded shadow-md w-full max-w-md"><div id='wrongalert' class="border-red-600 border-2 p-2 bg-red-300 text-red-800 rounded-md shadow-md invisible">
+      <div  className="bg-gray-800 p-5 rounded shadow-md w-full max-w-md"><div id='wrongalert' className="border-red-600 border-2 p-2 bg-red-300 text-red-800 rounded-md shadow-md invisible">
     Wrong Credentials! Enter Valid Details
 </div>
         <h2 className="text-4xl font-extrabold text-center text-white mb-6">Audio X</h2>

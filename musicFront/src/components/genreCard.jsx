@@ -1,13 +1,24 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 import GenreSongs from './GenreSongs';
+import { getUrl } from './s3Op';
 
-const GenreCard = ({ genre, thumbnail }) => {
+const GenreCard = ({ genre, thumbnailName }) => {
     const navigate=useNavigate();
+    const [thumbnail,setThumbnail]=useState(null)
 
     const handleClick = async () => { 
         navigate("/genreSongs",{state:{genre}}); 
     }
+    useEffect(() => {
+        getAwsData();
+      }, [])
+    
+      const getAwsData = async () => { 
+        const thumb = await getUrl(thumbnailName);  
+        setThumbnail(thumb);
+      }
 
     return (
         <div className='w-60 h-24 relative cursor-pointer ' onClick={handleClick}>

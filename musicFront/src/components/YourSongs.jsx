@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import RecentCard from "./RecentCard";
 import Sidebar from "./Sidebar";
 import { useNavigate } from "react-router-dom";
+import { deleteUrl } from "./s3Op";
 
 const YourSong = () => {
     const navigate = useNavigate()
@@ -53,8 +54,15 @@ const YourSong = () => {
                 },
                 body: JSON.stringify({ id: id })
             })
-            if (response.ok) {
+            const data = await response.json(); 
+            console.log(data.songs);
+            if (response.ok) { 
+                console.log(data.song+"data")
+                const deleteSong = await deleteUrl(data.song.file) 
+                const deleteThumbnail = await deleteUrl(data.song.thumbnail) 
+                console.log(deleteSong+"deleteSOng")
                 console.log("DELETED")
+
                 setRefreshSongs(prevState => !prevState);
             }
             else {

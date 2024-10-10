@@ -7,6 +7,6 @@
 
 import mongoose from "mongoose"; 
 
-mongoose.connect("mongodb+srv://samarthurane:Samarth3201@cluster0.otofk1f.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0").then(()=>{
-    console.log("Connection of DB succesful")
+mongoose.connect("mongodb+srv://samarthurane3201:samarthurane3201@cluster0.w2sqc.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0").then(()=>{
+    console.log("Connection of DB succes    ful")
 }).catch((err)=>console.log(err));

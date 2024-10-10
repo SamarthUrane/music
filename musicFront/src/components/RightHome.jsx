@@ -77,7 +77,7 @@ const RightHome= ()=>{
             <h3 className="text-2xl font-bold  mt-12 ml-5 mb-2">Catogories</h3>
             <div className="flex flex-wrap justify-between p-1 mb-2 sm:gap-x-5 sm:gap-y-10"> 
             {genres.map((genre)=>(
-                <GenreCard genre={genre.name} thumbnail={genre.thumbnail}/> 
+                <GenreCard genre={genre.name} thumbnailName={genre.name+"Thumbnail"}/> 
             ))} 
             </div>
 
